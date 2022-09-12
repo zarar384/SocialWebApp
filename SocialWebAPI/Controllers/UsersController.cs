@@ -5,9 +5,7 @@ using SocialWebAPI.Entities;
 
 namespace SocialWebAPI.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController:ControllerBase
+     public class UsersController: BaseAPIController
     {
         private readonly AppDbContext _context;
 
