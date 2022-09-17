@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SocialWebAPI.Db;
 using SocialWebAPI.DTOs;
 using SocialWebAPI.Entities;
+using SocialWebAPI.Interfaces;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -10,15 +11,17 @@ namespace SocialWebAPI.Controllers
 {
     public class AccountController : BaseAPIController
     {
-        public AppDbContext _context { get; }
+        private readonly AppDbContext _context;
+        private readonly ITokenService _tokenService;
 
-        public AccountController(AppDbContext context)
+        public AccountController(AppDbContext context, ITokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
 
@@ -34,13 +37,17 @@ namespace SocialWebAPI.Controllers
             _context.AppUsers.Add(user);
             await _context.SaveChangesAsync();
 
-            return user;
+            return new UserDto
+            {
+                Username = user.UserName,
+                Token = _tokenService.CreateToken(user)
+            };
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AppUser>> Login(RegisterDto loginDto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user =  _context.AppUsers.Where(x => x.UserName == loginDto.Username).FirstOrDefault();
+            var user = await _context.AppUsers.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
 
             if (user == null) return Unauthorized("Invalid username");
             using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -51,7 +58,12 @@ namespace SocialWebAPI.Controllers
             {
                 if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
             }
-            return Ok(user);
+
+            return new UserDto
+            {
+                Username = user.UserName,
+                Token = _tokenService.CreateToken(user)
+            };
         }
 
         private async Task<bool> UserExists(string username)
