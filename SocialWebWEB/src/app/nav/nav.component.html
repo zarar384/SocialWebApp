@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
   <div class="container">
     <a class="navbar-brand" href="#">Carousel</a>
-    <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="loggedIn==true">
+    <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="accountService.currentUser$ | async">
       <li class="nav-item">
         <a class="nav-link" href="#">Matches</a>
       </li>
@@ -13,7 +13,8 @@
       </li>
     </ul>
 
-    <div class="btn-group" dropdown [insideClick]="true" *ngIf="loggedIn">
+    <div class="btn-group" dropdown [insideClick]="true"
+         *ngIf="accountService.currentUser$ | async, else logIn">
       <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
         {{model.username}}<span class="caret"></span>
       </button>
@@ -25,15 +26,17 @@
       </ul>
     </div>
 
-    <ul class="nav navbar-nav navbar-right">
-      <form #loginForm="ngForm" class="d-flex" role="submit" (ngSubmit)="login()"
-            autocomplete="off" *ngIf="!loggedIn">
-        <input name="username" [(ngModel)]="model.username" class="form-control me-2" type="text"
-               placeholder="Username">
-        <input name="password" [(ngModel)]="model.password" class="form-control me-2" type="password"
-               placeholder="Password">
-        <button class="btn btn-outline-success" type="submit">Login</button>
-      </form>
-    </ul>
+    <ng-template #logIn>
+      <ul class="nav navbar-nav navbar-right"><!--  (currentUser$ | async) === null    -->
+        <form #loginForm="ngForm" class="d-flex" role="submit" (ngSubmit)="login()"
+        autocomplete="off" >
+          <input name="username" [(ngModel)]="model.username" class="form-control me-2" type="text"
+                 placeholder="Username">
+          <input name="password" [(ngModel)]="model.password" class="form-control me-2" type="password"
+                 placeholder="Password">
+          <button class="btn btn-outline-success" type="submit">Login</button>
+        </form>
+      </ul>
+    </ng-template>
   </div>
 </nav>
