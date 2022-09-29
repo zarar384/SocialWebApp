@@ -10,14 +10,17 @@ import { User } from '../_models/user';
 })
 export class NavComponent implements OnInit {
   model: any ={}
+  userName: any;
 
   constructor(public accountService: AccountService) { }
 
   ngOnInit(): void {
+    this.setUsername()
   }
 
   login(){
     this.accountService.login(this.model).subscribe(response =>{
+      this.setUsername()
       console.log(response)
     }, error =>{
       console.log(error)
@@ -28,10 +31,10 @@ export class NavComponent implements OnInit {
     this.accountService.logout()
   }
 
-  // getCurrentUser(){
-  //   this.accountService.currentUser$.subscribe(user =>{
-  //   }, error=>{
-  //     console.log(error)
-  //   })
-  // }
+  setUsername(){
+    const user: User = JSON.parse(localStorage.getItem('user'))
+    if(user){
+      this.userName = user.username;
+    }
+  }
 }

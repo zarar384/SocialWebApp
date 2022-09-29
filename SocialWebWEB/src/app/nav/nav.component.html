@@ -16,7 +16,7 @@
     <div class="btn-group" dropdown [insideClick]="true"
          *ngIf="accountService.currentUser$ | async, else logIn">
       <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
-        {{model.username}}<span class="caret"></span>
+        {{userName}}<span class="caret"></span>
       </button>
       <ul *dropdownMenu class="dropdown-menu mt-3" role="menu">
         <li role="menuitem"><a class="dropdown-item" href="#">Edit profile</a></li>

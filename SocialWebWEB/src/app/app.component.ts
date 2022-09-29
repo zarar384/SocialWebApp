@@ -12,23 +12,14 @@ export class AppComponent implements OnInit{
   title = 'SocialWebWEB';
   users: any;
 
-  constructor(private http: HttpClient, private accountService: AccountService) {}
+  constructor( private accountService: AccountService) {}
 
   ngOnInit() {
-    this.getUsers();
     this.setCurrentUser();
   }
 
   setCurrentUser(){
     const user: User = JSON.parse(localStorage.getItem('user'))
     this.accountService.setCurrentUser(user);
-  }
-
-  getUsers(){
-    this.http.get('https://localhost:5001/api/users')
-      .subscribe({
-        next: res => this.users = res,
-        error: error => console.log(error)
-      })
   }
 }
