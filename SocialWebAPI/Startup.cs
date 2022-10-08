@@ -18,6 +18,7 @@ using Microsoft.OpenApi.Models;
 using SocialWebAPI.Db;
 using SocialWebAPI.Extensions;
 using SocialWebAPI.Interfaces;
+using SocialWebAPI.Middleware;
 using SocialWebAPI.Services;
 
 namespace API
@@ -49,7 +50,8 @@ namespace API
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
+                app.UseMiddleware<ExceptionMiddleware>();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
             } 

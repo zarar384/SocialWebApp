@@ -7,8 +7,9 @@ namespace SocialWebAPI.DTOs
         [Required]
         [MaxLength(30)]
         public string Username { get; set; }
+
         [Required]
-        [MaxLength(30)]
+        [StringLength(8, MinimumLength = 4)]
         public string Password { get; set; }
 
     }
