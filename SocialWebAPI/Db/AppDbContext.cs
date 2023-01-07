@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SocialWebAPI.Entities;
+using SocialWebAPI.Extensions;
 
 namespace SocialWebAPI.Db
 {
@@ -19,6 +20,17 @@ namespace SocialWebAPI.Db
         #endregion
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
+
+        }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder builder)
+        {
+
+            builder.Properties<DateOnly>() //TODO Check
+                .HaveConversion<DateOnlyConverter>()
+                .HaveColumnType("date");
+
+            base.ConfigureConventions(builder);
 
         }
     }
