@@ -33,16 +33,37 @@ namespace API
         public IConfiguration _config { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public async void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationServices(_config);
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+                });
             services.AddCors();
             services.AddIdentityServices(_config);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
             });
+
+            using ServiceProvider serviceProvider = services.BuildServiceProvider();
+            using (IServiceScope scope = serviceProvider.CreateScope())
+            {
+               var serv = scope.ServiceProvider; //services
+                try
+                {
+                    var context = serv.GetRequiredService<AppDbContext>();
+                    await context.Database.MigrateAsync();
+                    await Seed.SeedUsers(context);
+                }
+                catch(Exception ex)
+                {
+                    var logger = serv.GetService<ILogger<Startup>>();
+                    logger.LogError(ex, "An error occurred during migration");
+                }
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

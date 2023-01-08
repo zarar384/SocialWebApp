@@ -6,7 +6,8 @@ using SocialWebAPI.Entities;
 
 namespace SocialWebAPI.Controllers
 {
-     public class UsersController: BaseAPIController
+    [Authorize]
+    public class UsersController: BaseAPIController
     {
         private readonly AppDbContext _context;
 
@@ -15,13 +16,11 @@ namespace SocialWebAPI.Controllers
             _context = context;
         }
         [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
             return await _context.AppUsers.ToListAsync();
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUsersById(int id)
         {
