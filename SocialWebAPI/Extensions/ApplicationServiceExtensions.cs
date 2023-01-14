@@ -9,9 +9,10 @@ namespace SocialWebAPI.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddScoped<ITokenService, TokenService>();
             services.AddDbContext<AppDbContext>(option =>
             option.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }
