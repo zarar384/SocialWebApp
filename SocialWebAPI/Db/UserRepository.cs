@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using SocialWebAPI.Entities;
 using SocialWebAPI.Interfaces;
 
@@ -7,10 +9,12 @@ namespace SocialWebAPI.Db
     public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public UserRepository(AppDbContext context)
+        public UserRepository(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<AppUser> GetByIdAsync(int id)
@@ -23,6 +27,21 @@ namespace SocialWebAPI.Db
             return await _context.AppUsers
                 .Include(i=>i.Photos)
                 .SingleOrDefaultAsync(x => x.UserName == userName);
+        }
+
+        public async Task<MemberDto> GetMemberByNameAsync(string memberName)
+        {
+            return await _context.AppUsers
+                .Where(x => x.UserName == memberName)
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        {
+            return await _context.AppUsers
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()

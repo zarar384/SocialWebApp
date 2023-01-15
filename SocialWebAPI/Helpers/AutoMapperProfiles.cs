@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SocialWebAPI.Db;
 using SocialWebAPI.Entities;
+using SocialWebAPI.Extensions;
 
 namespace SocialWebAPI.Helpers
 {
@@ -9,7 +10,8 @@ namespace SocialWebAPI.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<AppUser, MemberDto>()
-                .ForMember(dest => dest.PhotoUrl, opt=> opt.MapFrom(src=>src.Photos.FirstOrDefault(x=>x.IsMain).Url));
+                .ForMember(dest => dest.PhotoUrl, opt=> opt.MapFrom(src=>src.Photos.FirstOrDefault(x=>x.IsMain).Url))
+                .ForMember(dest => dest.Age, opt => opt.MapFrom(src=>src.DateOfBirth.CalculateAge()));
             CreateMap<Photo, PhotoDto>();
         }
     }
