@@ -1,1 +1,12 @@
-<p>member-list works!</p>
+<table >
+  <thead>
+  <th>Index</th>
+  <th>Name</th>
+  </thead>
+  <tbody class="col-2" >
+  <tr *ngFor="let hero of members">
+    <td>{{hero.appUserId}}</td>
+    <td>{{hero.userName}}</td>
+  </tr>
+  </tbody>
+</table>
