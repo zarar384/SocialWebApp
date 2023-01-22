@@ -1,12 +1,5 @@
-<table >
-  <thead>
-  <th>Index</th>
-  <th>Name</th>
-  </thead>
-  <tbody class="col-2" >
-  <tr *ngFor="let hero of members">
-    <td>{{hero.appUserId}}</td>
-    <td>{{hero.userName}}</td>
-  </tr>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col-2" *ngFor="let member of members">
+    <app-members-card [member]="member"></app-members-card>
+  </div>
+</div>
