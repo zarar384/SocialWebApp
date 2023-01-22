@@ -21,9 +21,4 @@ export class MemberListComponent implements OnInit {
       next: members => this.members = members
     })
   }
-
-  text:string = ""
-   test(value){
-    this.text+= value.userName
-  }
 }
