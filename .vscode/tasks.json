@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/SocialWebAPI/SocialWebAPI.csproj",
+                "${workspaceFolder}/SocialWebApp.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/SocialWebAPI/SocialWebAPI.csproj",
+                "${workspaceFolder}/SocialWebApp.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/SocialWebAPI/SocialWebAPI.csproj"
+                "${workspaceFolder}/SocialWebApp.sln"
             ],
             "problemMatcher": "$msCompile"
         }

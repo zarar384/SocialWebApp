@@ -1,15 +1,17 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialWebAPI.Db;
+using SocialWebAPI.DTOs;
 using SocialWebAPI.Entities;
 using SocialWebAPI.Interfaces;
 
 namespace SocialWebAPI.Controllers
 {
     [Authorize]
-    public class UsersController: BaseAPIController
+    public class UsersController : BaseAPIController
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -43,5 +45,20 @@ namespace SocialWebAPI.Controllers
         //{
         //    return await _userRepository.GetByIdAsync(id);
         //}
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userRepository.GetByUserNameAsync(username);
+
+            if (user == null) return NotFound();
+
+            _mapper.Map(memberUpdateDto, user);
+
+            if (await _userRepository.SaveAllAsync()) return NoContent();
+
+            return BadRequest("Update user failed");
+        }
     }
 }
