@@ -36,6 +36,14 @@
                 "${workspaceFolder}/SocialWebApp.sln"
             ],
             "problemMatcher": "$msCompile"
-        }
+        },
+        {
+            "type": "npm",
+            "script": "start",
+            "path": "SocialWebWEB",
+            "problemMatcher": [],
+            "label": "npm: start - SocialWebWEB",
+            "detail": "ng serve",
+        },
     ]
 }
