@@ -19,6 +19,7 @@
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false
+    "enableI18nLegacyMessageIdFormat": false,
+    "allowSyntheticDefaultImports": true,
   }
 }
