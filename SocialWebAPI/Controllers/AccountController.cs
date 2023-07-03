@@ -26,7 +26,7 @@ namespace SocialWebAPI.Controllers
             if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
 
             using var hmac = new HMACSHA512();
- 
+
             var user = new AppUser
             {
                 UserName = registerDto.Username.ToLower(),
@@ -47,7 +47,9 @@ namespace SocialWebAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.AppUsers.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
+            var user = await _context.AppUsers
+                        .Include(x => x.Photos)
+                        .SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
 
             if (user == null) return Unauthorized("Invalid username");
             using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -62,7 +64,8 @@ namespace SocialWebAPI.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
             };
         }
 

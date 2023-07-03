@@ -19,8 +19,9 @@
     </ul>
 
     <div class="btn-group" dropdown [insideClick]="true"
-         *ngIf="accountService.currentUser$ | async, else logIn">
-      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+         *ngIf="(accountService.currentUser$ | async) as user, else logIn">
+         <img src="{{user.photoUrl || './assets/user.png'}}" alt="user photo">
+      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle ms-1">
         {{userName}}<span class="caret"></span>
       </button>
       <ul *dropdownMenu class="dropdown-menu mt-3" role="menu">
