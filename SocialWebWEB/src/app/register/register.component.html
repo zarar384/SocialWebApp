@@ -3,15 +3,34 @@
   <hr>
   <div class="form-group">
     <input type="text" class="form-control mb-2" 
+    [class.is-invalid]="registerForm.get('username')?.errors && registerForm.get('username')?.touched"
     formControlName="username" placeholder="Username">
+    <div class="invalid-feedback">Please enter the username</div>
   </div>
   <div class="form-group">
     <input type="text" class="form-control mb-2" 
+    [class.is-invalid]="registerForm.get('password').errors && registerForm.get('password')?.touched"
     formControlName="password" placeholder="Password">
+    <div class="invalid-feedback" *ngIf="registerForm.get('password')?.hasError('required')">
+      Please enter password
+    </div>
+    <div class="invalid-feedback" *ngIf="registerForm.get('password')?.hasError('minlength')">
+      Minimum password length 4 characters
+    </div>
+    <div class="invalid-feedback" *ngIf="registerForm.get('password')?.hasError('maxlength')">
+      Maximum password length 8 characters
+    </div>
   </div>
   <div class="form-group">
     <input type="text" class="form-control mb-2" 
+    [class.is-invalid]="registerForm.get('confirmPassword').errors && registerForm.get('confirmPassword')?.touched"
     formControlName="confirmPassword" placeholder="Confirm Password">
+    <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
+      Please enter a confirmation password
+    </div>
+    <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword')?.hasError('notMatching')">
+      Confirm password must match password
+    </div>
   </div>
   <div class="form-group text-center">
     <button class="btn btn-success me-2" type="submit">Register</button>
