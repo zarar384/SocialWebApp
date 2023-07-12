@@ -3,6 +3,7 @@ import { AccountService } from '../_services/account.service';
 import { ToastrService } from 'ngx-toastr';
 import {
   AbstractControl,
+  FormBuilder,
   FormControl,
   FormGroup,
   ValidatorFn,
@@ -20,7 +21,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -28,17 +30,17 @@ export class RegisterComponent implements OnInit {
   }
 
   initializeForm() {
-    this.registerForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', [
+    this.registerForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(8),
-      ]),
-      confirmPassword: new FormControl('', [
+      ]],
+      confirmPassword: ['', [
         Validators.required,
         this.matchValuese('password'),
-      ]),
+      ]],
     });
 
     this.registerForm.controls['password'].valueChanges.subscribe({
