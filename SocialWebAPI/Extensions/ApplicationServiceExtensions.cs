@@ -9,8 +9,9 @@ namespace SocialWebAPI.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddDbContext<AppDbContext>(option =>
-                option.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+            services.AddDbContextPool<AppDbContext>(option =>
+                option.UseSqlServer(config.GetConnectionString("DefaultConnection"),
+                settings => settings.EnableRetryOnFailure().CommandTimeout(60)));
             services.AddCors();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();

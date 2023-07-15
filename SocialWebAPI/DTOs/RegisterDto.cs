@@ -6,7 +6,22 @@ namespace SocialWebAPI.DTOs
     {
         [Required]
         [MaxLength(30)]
-        public string Username { get; set; }
+        public string UserName { get; set; }
+
+        [Required]
+        public string KnownAs { get; set; }
+
+        [Required]
+        public string Gender { get; set; }
+
+        [Required]
+        public DateOnly? DateOfBirth { get; set; } //?- make required work
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        public string Country { get; set; }
 
         [Required]
         [StringLength(8, MinimumLength = 4)]
