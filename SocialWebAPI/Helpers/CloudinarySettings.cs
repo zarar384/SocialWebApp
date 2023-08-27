@@ -1,4 +1,4 @@
-﻿namespace SocialWebAPI;
+﻿namespace SocialWebAPI.Helpers;
 
 public class CloudinarySettings
 {

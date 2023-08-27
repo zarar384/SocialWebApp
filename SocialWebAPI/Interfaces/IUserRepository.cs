@@ -1,5 +1,6 @@
 ﻿using SocialWebAPI.Db;
 using SocialWebAPI.Entities;
+using SocialWebAPI.Helpers;
 using System.Threading.Tasks;
 
 namespace SocialWebAPI.Interfaces
@@ -11,7 +12,7 @@ namespace SocialWebAPI.Interfaces
         Task<IEnumerable<AppUser>> GetUsersAsync();
         Task<AppUser> GetByIdAsync(int id);
         Task<AppUser> GetByUserNameAsync(string userName);
-        Task<IEnumerable<MemberDto>> GetMembersAsync();
+        Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams);
         Task<MemberDto> GetMemberByNameAsync(string memberName);
     }
 }

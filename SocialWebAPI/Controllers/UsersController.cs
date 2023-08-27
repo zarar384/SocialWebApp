@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using SocialWebAPI.Db;
 using SocialWebAPI.DTOs;
 using SocialWebAPI.Entities;
+using SocialWebAPI.Extensions;
+using SocialWebAPI.Helpers;
 using SocialWebAPI.Interfaces;
 
 namespace SocialWebAPI.Controllers
@@ -25,10 +27,14 @@ namespace SocialWebAPI.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        public async Task<ActionResult<PageList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
-            return Ok(await _userRepository.GetMembersAsync());
+            var users = await _userRepository.GetMembersAsync(userParams);
 
+            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize,
+                users.TotalCount, users.TotalPages));
+
+            return Ok(users);
             //var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users);
             //return Ok(usersToReturn);
         }

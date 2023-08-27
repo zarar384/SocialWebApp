@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SocialWebAPI.Entities;
+using SocialWebAPI.Helpers;
 using SocialWebAPI.Interfaces;
 
 namespace SocialWebAPI.Db
@@ -25,7 +26,7 @@ namespace SocialWebAPI.Db
         public async Task<AppUser> GetByUserNameAsync(string userName)
         {
             return await _context.AppUsers
-                .Include(i=>i.Photos)
+                .Include(i => i.Photos)
                 .SingleOrDefaultAsync(x => x.UserName == userName);
         }
 
@@ -37,17 +38,19 @@ namespace SocialWebAPI.Db
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        public async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            return await _context.AppUsers
+            var query = _context.AppUsers
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+                .AsNoTracking();
+
+            return await PageList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await _context.AppUsers
-                .Include(i=>i.Photos)
+                .Include(i => i.Photos)
                 .ToListAsync();
         }
 

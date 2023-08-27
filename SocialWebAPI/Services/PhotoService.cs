@@ -1,6 +1,7 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.Extensions.Options;
+using SocialWebAPI.Helpers;
 
 namespace SocialWebAPI;
 
