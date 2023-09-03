@@ -40,11 +40,20 @@ namespace SocialWebAPI.Db
 
         public async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            var query = _context.AppUsers
-                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-                .AsNoTracking();
+            var query = _context.AppUsers.AsQueryable();
 
-            return await PageList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+            query = query.Where(u => u.UserName != userParams.CurrentUsername);
+            query = query.Where(u => u.Gender == userParams.Gender);
+
+            var minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MaxAge - 1)); //min date of birth 
+            var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MinAge)); //min date of birth 
+
+            query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+
+            return await PageList<MemberDto>.CreateAsync(
+                query.AsNoTracking().ProjectTo<MemberDto>(_mapper.ConfigurationProvider),
+                userParams.PageNumber,
+                userParams.PageSize);
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
