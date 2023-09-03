@@ -1,46 +1,49 @@
 import { Component, OnInit } from '@angular/core';
-import {AccountService} from "../_services/account.service";
-import {observable, Observable} from "rxjs";
+import { AccountService } from '../_services/account.service';
+import { observable, Observable } from 'rxjs';
 import { User } from '../_models/user';
-import {Router} from "@angular/router";
-import {ToastrService} from 'ngx-toastr'
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+  styleUrls: ['./nav.component.css'],
 })
 export class NavComponent implements OnInit {
-  model: any ={}
-  userName: any;
+  model: any = {};
+  knownAs: any;
 
-  constructor(public accountService: AccountService, private router: Router,
-              private toastr: ToastrService) { }
+  constructor(
+    public accountService: AccountService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
-    this.setUsername()
+    this.setKnownAs();
   }
 
-  login(){
-    this.accountService.login(this.model).subscribe(response =>{
-      this.setUsername()
-      this.router.navigateByUrl('/members')
-      console.log(response)
-    })
+  login() {
+    this.accountService.login(this.model).subscribe((response) => {
+      this.setKnownAs();
+      this.router.navigateByUrl('/members');
+      console.log(response);
+    });
     //, error =>{
     //   console.log(error)
     //   this.toastr.error(error.error)
     // })
   }
 
-  logout(){
-    this.accountService.logout()
-    this.router.navigateByUrl('/')
+  logout() {
+    this.accountService.logout();
+    this.router.navigateByUrl('/');
   }
 
-  setUsername(){
-    const user: User = JSON.parse(localStorage.getItem('user'))
-    if(user){
-      this.userName = user.username;
+  setKnownAs() {
+    const user: User = JSON.parse(localStorage.getItem('knownAs'));
+    if (user) {
+      this.knownAs = user.knownAs;
     }
   }
 }
