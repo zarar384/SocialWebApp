@@ -7,6 +7,7 @@ namespace SocialWebAPI.Db
     public class AppDbContext : DbContext
     {
         public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<UserLike> Likes { get; set; }
 
         #region test Db
         //public AppDbContext()
@@ -20,7 +21,6 @@ namespace SocialWebAPI.Db
         #endregion
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-
         }
 
         protected override void ConfigureConventions(ModelConfigurationBuilder builder)
@@ -31,7 +31,26 @@ namespace SocialWebAPI.Db
                 .HaveColumnType("date");
 
             base.ConfigureConventions(builder);
+        }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<UserLike>()
+                .HasKey(k => new { k.SourceUserId, k.TargetUserId });
+
+            builder.Entity<UserLike>()
+                .HasOne(s => s.SourceUser)
+                .WithMany(t => t.LikedUsers)
+                .HasForeignKey(s => s.SourceUserId)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            builder.Entity<UserLike>()
+                .HasOne(s => s.TargetUser)
+                .WithMany(t => t.LikedByUsers)
+                .HasForeignKey(s => s.TargetUserId)
+                .OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }
