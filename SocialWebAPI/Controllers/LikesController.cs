@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SocialWebAPI.Controllers;
+using SocialWebAPI.Extensions;
+using SocialWebAPI.Helpers;
 using SocialWebAPI.Interfaces;
 
 namespace SocialWebAPI;
@@ -43,10 +45,14 @@ public class LikesController : BaseAPIController
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<LikeDto>>> GetUserLikes(string predicate)
+    public async Task<ActionResult<PageList<LikeDto>>> GetUserLikes([FromQuery] LikesParams likesParams)
     {
-        var user = await _likesRepository.GetUserLikes(predicate, User.GetUserId());
+        likesParams.UserId = User.GetUserId();
 
-        return Ok(user);
+        var users = await _likesRepository.GetUserLikes(likesParams);
+
+        Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
+
+        return Ok(users);
     }
 }

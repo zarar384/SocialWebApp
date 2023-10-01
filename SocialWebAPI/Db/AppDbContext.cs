@@ -8,6 +8,7 @@ namespace SocialWebAPI.Db
     {
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<UserLike> Likes { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         #region test Db
         //public AppDbContext()
@@ -51,6 +52,16 @@ namespace SocialWebAPI.Db
                 .WithMany(t => t.LikedByUsers)
                 .HasForeignKey(s => s.TargetUserId)
                 .OnDelete(DeleteBehavior.ClientCascade);
+
+            builder.Entity<Message>()
+                .HasOne(u => u.Recipient)
+                .WithMany(m => m.MessagesReceived)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(u => u.Sender)
+                .WithMany(m => m.MessagesSent)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
