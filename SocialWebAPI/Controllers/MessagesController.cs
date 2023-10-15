@@ -20,6 +20,7 @@ public class MessagesController : BaseAPIController
 
     }
 
+    [HttpPost]
     public async Task<ActionResult<MessageDto>> CreateMessage(CreateMessageDto createMessageDto)
     {
         var username = User.GetUsername();
@@ -66,5 +67,26 @@ public class MessagesController : BaseAPIController
         var currentUserName = User.GetUsername();
 
         return Ok(await _messageRepository.GetMessageThread(currentUserName, username));
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteMessage(int id)
+    {
+        var username = User.GetUsername();
+
+        var message = await _messageRepository.GetMessage(id);
+
+        if (message.SenderUsername != username && message.RecipientUsername != username)
+            return Unauthorized();
+
+        if (message.SenderUsername == username) message.SenderDeleted = true;
+        if (message.RecipientUsername == username) message.RecipientDeleted = true;
+
+        if (message.SenderDeleted && message.RecipientDeleted)
+            _messageRepository.DeleteMessage(message);
+
+        if (await _messageRepository.SaveAllAsync()) return Ok();
+
+        return BadRequest("Problem deleting the message");
     }
 }
