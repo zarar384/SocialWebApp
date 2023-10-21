@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SocialWebAPI.Db;
+using SocialWebAPI.Entities;
 using SocialWebAPI.Extensions;
 using SocialWebAPI.Middleware;
 
@@ -38,8 +40,9 @@ namespace API
                 try
                 {
                     var context = serv.GetRequiredService<AppDbContext>();
+                    var userManager = serv.GetRequiredService<UserManager<AppUser>>();
                     await context.Database.MigrateAsync();
-                    // await Seed.SeedUsers(context);
+                    await Seed.SeedUsers(userManager);
                 }
                 catch (Exception ex)
                 {

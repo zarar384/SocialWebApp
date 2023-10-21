@@ -97,7 +97,7 @@ namespace SocialWebAPI.Migrations
                         name: "FK_Photos_AppUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AppUsers",
-                        principalColumn: "AppUserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 

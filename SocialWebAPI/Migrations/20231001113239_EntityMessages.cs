@@ -32,13 +32,13 @@ namespace SocialWebAPI.Migrations
                         name: "FK_Messages_AppUsers_RecipientId",
                         column: x => x.RecipientId,
                         principalTable: "AppUsers",
-                        principalColumn: "AppUserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Messages_AppUsers_SenderId",
                         column: x => x.SenderId,
                         principalTable: "AppUsers",
-                        principalColumn: "AppUserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
