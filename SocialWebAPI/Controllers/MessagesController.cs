@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SocialWebAPI.Controllers;
+using SocialWebAPI.Entities;
 using SocialWebAPI.Extensions;
 using SocialWebAPI.Helpers;
 using SocialWebAPI.Interfaces;

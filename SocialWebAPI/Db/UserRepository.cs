@@ -20,19 +20,19 @@ namespace SocialWebAPI.Db
 
         public async Task<AppUser> GetByIdAsync(int id)
         {
-            return await _context.AppUsers.FindAsync(id);
+            return await _context.Users.FindAsync(id);
         }
 
         public async Task<AppUser> GetByUserNameAsync(string userName)
         {
-            return await _context.AppUsers
+            return await _context.Users
                 .Include(i => i.Photos)
                 .SingleOrDefaultAsync(x => x.UserName == userName);
         }
 
         public async Task<MemberDto> GetMemberByNameAsync(string memberName)
         {
-            return await _context.AppUsers
+            return await _context.Users
                 .Where(x => x.UserName == memberName)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
@@ -40,7 +40,7 @@ namespace SocialWebAPI.Db
 
         public async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            var query = _context.AppUsers.AsQueryable();
+            var query = _context.Users.AsQueryable();
 
             query = query.Where(u => u.UserName != userParams.CurrentUsername);
             query = query.Where(u => u.Gender == userParams.Gender);
@@ -64,7 +64,7 @@ namespace SocialWebAPI.Db
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
-            return await _context.AppUsers
+            return await _context.Users
                 .Include(i => i.Photos)
                 .ToListAsync();
         }

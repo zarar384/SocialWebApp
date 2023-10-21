@@ -1,16 +1,11 @@
-﻿using SocialWebAPI.Extensions;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using SocialWebAPI.Extensions;
 using System.Text.Json.Serialization;
 
 namespace SocialWebAPI.Entities
 {
-    public class AppUser
+    public class AppUser : IdentityUser<int>
     {
-        [Key]
-        public int AppUserId { get; set; }
-        public string UserName { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
         [JsonConverter(typeof(DateOnlyJsonConverter))]
         public DateOnly DateOfBirth { get; set; }
         public string KnownAs { get; set; }
@@ -29,5 +24,7 @@ namespace SocialWebAPI.Entities
 
         public List<Message> MessagesSent { get; set; }
         public List<Message> MessagesReceived { get; set; }
+
+        public ICollection<AppUserRole> UserRoles { get; set; }
     }
 }

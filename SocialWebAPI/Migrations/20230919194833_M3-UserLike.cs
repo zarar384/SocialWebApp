@@ -30,12 +30,12 @@ namespace SocialWebAPI.Migrations
                         name: "FK_Likes_AppUsers_SourceUserId",
                         column: x => x.SourceUserId,
                         principalTable: "AppUsers",
-                        principalColumn: "AppUserId");
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Likes_AppUsers_TargetUserId",
                         column: x => x.TargetUserId,
                         principalTable: "AppUsers",
-                        principalColumn: "AppUserId");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

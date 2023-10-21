@@ -25,17 +25,17 @@ namespace SocialWebAPI.Migrations
 
             modelBuilder.Entity("SocialWebAPI.Entities.AppUser", b =>
                 {
-                    b.Property<int>("AppUserId")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppUserId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AppUserId");
+                    b.HasKey("ID");
 
                     b.ToTable("AppUsers");
                 });

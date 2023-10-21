@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SocialWebAPI.Controllers;
+using SocialWebAPI.Entities;
 using SocialWebAPI.Extensions;
 using SocialWebAPI.Helpers;
 using SocialWebAPI.Interfaces;
@@ -27,14 +28,14 @@ public class LikesController : BaseAPIController
 
         if (sourceUser.UserName == username) return BadRequest("You cannot like yourself");
 
-        var userLike = await _likesRepository.GetUserLike(sourceUserId, likedUser.AppUserId);
+        var userLike = await _likesRepository.GetUserLike(sourceUserId, likedUser.Id);
 
         if (userLike != null) return BadRequest("You already like this user");
 
         userLike = new UserLike
         {
             SourceUserId = sourceUserId,
-            TargetUserId = likedUser.AppUserId
+            TargetUserId = likedUser.Id
         };
 
         sourceUser.LikedUsers.Add(userLike);

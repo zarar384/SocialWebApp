@@ -24,7 +24,7 @@ namespace SocialWebAPI.Controllers
         [HttpGet("not-found")]
         public ActionResult<AppUser> GetNotFound()
         {
-            var thing = _context.AppUsers.Find(-1);
+            var thing = _context.Users.Find(-1);
 
             if (thing == null) return NotFound();
             return Ok(thing);
@@ -34,7 +34,7 @@ namespace SocialWebAPI.Controllers
         [HttpGet("server-error")]
         public ActionResult<string> GetServerError()
         {
-            var thing = _context.AppUsers.Find(-1);
+            var thing = _context.Users.Find(-1);
 
             var thingToReturn = thing.ToString();
 

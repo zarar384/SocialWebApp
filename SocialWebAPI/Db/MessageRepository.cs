@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.EntityFrameworkCore;
 using SocialWebAPI.Db;
+using SocialWebAPI.Entities;
 using SocialWebAPI.Helpers;
 
 namespace SocialWebAPI;

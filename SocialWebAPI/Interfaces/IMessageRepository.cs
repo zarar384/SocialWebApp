@@ -1,4 +1,5 @@
 ﻿
+using SocialWebAPI.Entities;
 using SocialWebAPI.Helpers;
 
 namespace SocialWebAPI;

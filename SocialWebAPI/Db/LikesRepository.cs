@@ -21,7 +21,7 @@ public class LikesRepository : ILikesRepository
 
     public async Task<PageList<LikeDto>> GetUserLikes(LikesParams likesParams)
     {
-        var users = _context.AppUsers.OrderBy(u => u.UserName).AsQueryable();
+        var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
         var likes = _context.Likes.AsQueryable();
 
         if (likesParams.Predicate == "liked")
@@ -42,7 +42,7 @@ public class LikesRepository : ILikesRepository
             KnownAs = user.KnownAs,
             Age = user.DateOfBirth.CalculateAge(),
             PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain).Url,
-            Id = user.AppUserId,
+            Id = user.Id,
         });
 
         return await PageList<LikeDto>.CreateAsync(likedUsers, likesParams.PageNumber, likesParams.PageSize);
@@ -50,8 +50,8 @@ public class LikesRepository : ILikesRepository
 
     public async Task<AppUser> GetUserWithLikes(int userId)
     {
-        return await _context.AppUsers
+        return await _context.Users
             .Include(x => x.LikedUsers)
-            .FirstOrDefaultAsync(x => x.AppUserId == userId);
+            .FirstOrDefaultAsync(x => x.Id == userId);
     }
 }

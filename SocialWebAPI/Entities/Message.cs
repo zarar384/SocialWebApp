@@ -1,6 +1,4 @@
-﻿using SocialWebAPI.Entities;
-
-namespace SocialWebAPI;
+﻿namespace SocialWebAPI.Entities;
 
 public class Message
 {
