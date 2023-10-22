@@ -25,7 +25,6 @@ namespace SocialWebAPI.Controllers
             _photoService = photoService;
         }
 
-
         [HttpGet]
         public async Task<ActionResult<PageList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {

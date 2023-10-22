@@ -1,3 +1,4 @@
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -41,8 +42,9 @@ namespace API
                 {
                     var context = serv.GetRequiredService<AppDbContext>();
                     var userManager = serv.GetRequiredService<UserManager<AppUser>>();
+                    var roleManager = serv.GetRequiredService<RoleManager<AppRole>>();
                     await context.Database.MigrateAsync();
-                    await Seed.SeedUsers(userManager);
+                    await Seed.SeedUsers(userManager, roleManager);
                 }
                 catch (Exception ex)
                 {
