@@ -1,7 +1,7 @@
-import {Photo} from "src/app/_models/photo"
+import { Photo } from 'src/app/_models/photo';
 
 export interface Member {
-  appUserId: number;
+  ID: number;
   userName: string;
   photoUrl: string;
   age: number;

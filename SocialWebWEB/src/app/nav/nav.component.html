@@ -12,6 +12,9 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/messages" routerLinkActive="true">Messages</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="true">Admin</a>
+        </li>
       </ng-container>
       <li class="nav-item">
         <a class="nav-link" routerLink="/errors" routerLinkActive="true">Errors</a>
@@ -19,8 +22,8 @@
     </ul>
 
     <div class="btn-group" dropdown [insideClick]="true"
-         *ngIf="(accountService.currentUser$ | async) as user, else logIn">
-         <img src="{{user.photoUrl || './assets/user.png'}}" alt="user photo">
+      *ngIf="(accountService.currentUser$ | async) as user, else logIn">
+      <img src="{{user.photoUrl || './assets/user.png'}}" alt="user photo">
       <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle ms-1">
         {{userName}}<span class="caret"></span>
       </button>
@@ -34,12 +37,11 @@
 
     <ng-template #logIn>
       <ul class="nav navbar-nav navbar-right"><!--  (currentUser$ | async) === null    -->
-        <form #loginForm="ngForm" class="d-flex" role="submit" (ngSubmit)="login()"
-        autocomplete="off" >
+        <form #loginForm="ngForm" class="d-flex" role="submit" (ngSubmit)="login()" autocomplete="off">
           <input name="username" [(ngModel)]="model.username" class="form-control me-2" type="text"
-                 placeholder="Username">
+            placeholder="Username">
           <input name="password" [(ngModel)]="model.password" class="form-control me-2" type="password"
-                 placeholder="Password">
+            placeholder="Password">
           <button class="btn btn-success" type="submit">Login</button>
         </form>
       </ul>
