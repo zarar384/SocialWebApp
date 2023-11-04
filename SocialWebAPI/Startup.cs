@@ -45,6 +45,7 @@ namespace API
                     var userManager = serv.GetRequiredService<UserManager<AppUser>>();
                     var roleManager = serv.GetRequiredService<RoleManager<AppRole>>();
                     await context.Database.MigrateAsync();
+                    await context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE [Connections]");
                     await Seed.SeedUsers(userManager, roleManager);
                 }
                 catch (Exception ex)
