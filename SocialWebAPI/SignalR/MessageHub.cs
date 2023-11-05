@@ -27,7 +27,7 @@ public class MessageHub : Hub
     public override async Task OnConnectedAsync()
     {
         var httpContext = Context.GetHttpContext();
-        var otherUser = httpContext.Request.Query["user"];
+        var otherUser = httpContext.Request.Query["users"];
         var groupName = GetGroupName(Context.User.GetUsername(), otherUser);
         await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
         var group = await AddToGroup(groupName);
@@ -72,7 +72,7 @@ public class MessageHub : Hub
 
         var group = await _messageRepository.GetMessageGroup(groupName);
 
-        if (group.Connections.Any(x => x.Username == recipient.UserName))
+        if (group != null && group.Connections.Any(x => x.Username == recipient.UserName))
         {
             message.DateRead = DateTime.UtcNow;
         }
@@ -124,7 +124,6 @@ public class MessageHub : Hub
         var group = await _messageRepository.GetGroupForConnection(Context.ConnectionId);
         var connection = group.Connections.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
         _messageRepository.RemoveConnection(connection);
-        await _messageRepository.SaveAllAsync();
 
         if (await _messageRepository.SaveAllAsync()) return group;
 

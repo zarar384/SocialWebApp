@@ -6,7 +6,6 @@ import { HttpClient } from '@angular/common/http';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { User } from '../_models/user';
 import { BehaviorSubject, take } from 'rxjs';
-import { group } from 'console';
 import { Group } from '../_models/group';
 
 @Injectable({
@@ -30,6 +29,7 @@ export class MessageService {
       .build();
 
     this.hubConnection.start().catch((err) => console.log(err));
+
     this.hubConnection.on('ReceiveMessageThread', (messeges) => {
       this.messageThreadSource.next(messeges);
     });
