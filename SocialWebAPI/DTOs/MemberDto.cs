@@ -1,4 +1,4 @@
-﻿namespace SocialWebAPI.Db
+﻿namespace SocialWebAPI.DTOs
 {
     public class MemberDto
     {

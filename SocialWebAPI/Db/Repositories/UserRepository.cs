@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using SocialWebAPI.DTOs;
 using SocialWebAPI.Entities;
 using SocialWebAPI.Helpers;
 using SocialWebAPI.Interfaces;
@@ -62,6 +63,13 @@ namespace SocialWebAPI.Db
                 userParams.PageSize);
         }
 
+        public async Task<string> GetUserGender(string username)
+        {
+            return await _context.Users
+            .Where(x => x.UserName == username)
+            .Select(x => x.Gender).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await _context.Users
@@ -69,10 +77,10 @@ namespace SocialWebAPI.Db
                 .ToListAsync();
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0; //something in db = true
-        }
+        // public async Task<bool> SaveAllAsync()
+        // {
+        //     return await _context.SaveChangesAsync() > 0; //something in db = true
+        // }
 
         public void Update(AppUser user)
         {
